@@ -3,7 +3,7 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds,GatewayIntentBits.GuildMessages,GatewayIntentBits.DirectMessages,GatewayIntentBits.MessageContent,] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds,GatewayIntentBits.GuildMessages,GatewayIntentBits.DirectMessages,GatewayIntentBits.MessageContent] });
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
@@ -36,6 +36,10 @@ client.on('interactionCreate', async interaction => {
 	const command = client.commands.get(interaction.commandName);
 
 	if (!command) return;
+	if(!(interaction.member.roles.cache.some(r => r.name === "botmod"))){
+		interaction.reply("just user with the botmod role are allowed to use this bots features");
+		return;
+	} 
 
 	try {
 		(async () => {
@@ -61,7 +65,7 @@ client.login(token);
 async function changeMover(interaction){
 	const { commandName } = interaction;
 	if(commandName){
-		switch(interaction.options.getSubcommand()){
+			switch(interaction.options.getSubcommand()){
 			case 'on':
 				await interaction.reply('mover activated');
 				activated = true;
@@ -78,7 +82,7 @@ async function changeMover(interaction){
 				saveParameters(filePath);
 				await interaction.reply('mover set');
 				break;
-		}
+			}
 	}
 }
 
