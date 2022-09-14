@@ -33,6 +33,9 @@ bot.on('message', function (user, userID, channelID, message, evt) {
     if (message.substring(0, 1) == '!') {
         commands(message, channelID, userID);
     }
+    else if((activated === true) && (channelID === channelFrom)){
+        bot.deleteMessages()
+    }
 });
 
 
