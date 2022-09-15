@@ -36,11 +36,7 @@ client.on('interactionCreate', async interaction => {
 	const command = client.commands.get(interaction.commandName);
 
 	if (!command) return;
-	if(!(interaction.member.roles.cache.some(r => r.name === "botmod"))){
-		interaction.reply("just user with the botmod role are allowed to use this bots features");
-		return;
-	} 
-
+	
 	try {
 		(async () => {
 			if(await command.execute(interaction) === interaction){
@@ -63,6 +59,10 @@ client.login(token);
 
 
 async function changeMover(interaction){
+	if(!(interaction.member.roles.cache.some(r => r.name === "botmod"))){
+		interaction.reply("just user with the botmod role are allowed to use this bots features");
+		return;
+	} 
 	const { commandName } = interaction;
 	if(commandName){
 			switch(interaction.options.getSubcommand()){
